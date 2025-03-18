@@ -1,3 +1,5 @@
+## 模型地址
+[Modelscope 模型地址：deep-cot-eval-rag](https://www.modelscope.cn/collections/deep-cot-eval-rag-9bbc5f02a7854e)
 ## 1. 动机
 
 ### **1.1 传统RAG评估的局限性**
@@ -49,7 +51,7 @@
 
 - **监督学习缺点**：模型只能被动模仿标注的推理路径，缺乏自主探索能力。对于复杂问题（如多步推理、模糊边界的评分），模型可能仅学会"表面格式"，但无法真正优化推理质量。
 - **RL的优势**：通过设计**细粒度奖励函数**（如评分格式正确性、关键事实匹配度），RL允许模型在自由生成过程中动态调整策略，逐步逼近最优推理路径，而非机械复制标注数据。
-- **RL的泛化机制：**通过让模型在生成过程中探索多种可能的推理路径（如尝试不同的事实对比策略）。
+**RL的泛化机制**:通过让模型在生成过程中探索多种可能的推理路径（如尝试不同的事实对比策略）。
 
 ## 4. SFT
 
@@ -57,7 +59,7 @@
 
 输入：answer，answer_hat让模型评估
 
-输出：<think>——<think>+<output>——<output>
+输出：<[think]>—<[think]> + <[output]>—<[output]>
 
 ### 4.2 训练参数
 
@@ -79,7 +81,7 @@ weight_decay = 0.01
 - 损失值从初始的约2.25快速下降至0.75左右（60步内），整体下降趋势明显。
 - 为了防止过拟合，在训练60step在模型有思维链之后就停掉了SFT
 
-![image.png](attachment:1725f37d-ea6b-43e6-a441-597790422425:image.png)
+![image.png](image/sft.png)
 
 ## 5. GRPO
 
@@ -114,12 +116,18 @@ weight_decay = 0.01
 
 1. num_generations =**16**
 
-![image.png](attachment:c6074b04-2090-49b9-b265-259670a2215b:image.png)
+![image.png](image/grpo16-1.png)
 
-![image.png](attachment:d3a1e90a-86aa-443c-9e4f-f285698b4c59:image.png)
+![image.png](image/grpo16-2.png)
 
-1. num_generations =32
+2. num_generations =32
 
-![image.png](attachment:7f75810a-4a7e-422e-a1a1-0c3c3dcc7e1b:image.png)
+![image.png](image/grpo32-1.png)
 
-![image.png](attachment:459d29c3-7f28-4ea5-849e-7907eef7b71b:image.png)
+![image.png](image/grpo32-2.png)
+
+## 6. 后续工作
+本次使用的数据集质量较低且数量烧，且wiki百科的数据大部分模型应该都见过，无法评估在复杂场景下的能力
+- 使用更大质量更高的数据集
+- SFT是否可以进行的更长
+- 奖励函数优化
